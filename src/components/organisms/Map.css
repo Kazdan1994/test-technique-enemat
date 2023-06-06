@@ -1,8 +1,0 @@
-#map {
-    height: calc(100% - 1.5rem - 64px);
-    width: 100%;
-}
-
-#map img {
-    border-radius: 50%;
-}

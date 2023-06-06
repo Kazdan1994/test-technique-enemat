@@ -8,6 +8,7 @@ import data from "./data.ts";
 import { useMapStore } from "./store.ts";
 import { defaultMapOptions } from "./utils.ts";
 import { Avatar } from "primereact/avatar";
+import "./App.css";
 
 function App() {
   const { map, googleInstance } = useMapStore((state) => state);
@@ -41,45 +42,43 @@ function App() {
   }
 
   const itemTemplate = (person: Person) => (
-    <div className="md:col-12 lg:col-6 p-2">
-      <div className="flex flex-column surface-border shadow-1 p-4 surface-card border-round">
-        <div className="flex flex-column align-items-center gap-4">
-          <Avatar
-            image={`/img/avatars/avatar-${person.id}.png`}
-            size="xlarge"
-            shape="circle"
-          />
-          <div>
-            <span className="font-bold">{person.name}</span>
-            <span> - {calcDistance(person.location)} km</span>
-          </div>
-        </div>
-        <footer className="mt-auto text-center my-4">
-          <Button
-            icon="pi pi-map-marker"
-            label={`Locate ${person.name}`}
-            raised
-            severity="success"
-            aria-label={`Show location of ${person.name}`}
-            onClick={centerOnPerson(person)}
-            size="small"
-          />
-        </footer>
+    <div className="flex justify-content-between align-items-center flex-column surface-border px-2 shadow-1 surface-card border-round">
+      <Avatar
+        image={`/img/avatars/avatar-${person.id}.png`}
+        size="xlarge"
+        shape="circle"
+      />
+      <div className="mt-2 mb-2 text-center">
+        <div className="font-bold max-w-5rem">{person.name}</div>
       </div>
+      <footer className="mt-auto mb-2">
+        <Button
+          icon="pi pi-map-marker"
+          label={`${calcDistance(person.location)} km`}
+          raised
+          severity="success"
+          aria-label={`Show location of ${person.name}`}
+          onClick={centerOnPerson(person)}
+          size="small"
+        />
+      </footer>
     </div>
   );
 
   return (
     <>
       <Navbar />
-      <div className="flex justify-content-between">
-        <div className="col-4">
-          <DataView value={people} itemTemplate={itemTemplate} layout="grid" />
+      <div className="m-4 lg:flex lg:justify-content-between">
+        <div className="sm:col-12 lg:col-6 relative">
+          <MapContainer people={people} />
         </div>
-        <div className="col-8">
-          <div className="m-4 relative h-full">
-            <MapContainer people={people} />
-          </div>
+        <div className="sm:col-12 lg:col-6 flex justify-content-center">
+          <DataView
+            className="dataview__people"
+            value={people}
+            itemTemplate={itemTemplate}
+            layout="grid"
+          />
         </div>
       </div>
     </>

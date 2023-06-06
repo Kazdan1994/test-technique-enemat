@@ -4,7 +4,6 @@ import { Person } from "../../types.ts";
 import { useMapStore } from "../../store.ts";
 import { Button } from "primereact/button";
 import { defaultMapOptions } from "../../utils.ts";
-import "./Map.css";
 
 const loader = new Loader({
   apiKey: import.meta.env.VITE_GOOGLE_API_KEY,
@@ -68,18 +67,6 @@ function MapContainer({ people }: MapContainerProps) {
         });
 
         setMap(newMap);
-
-        const distance = google.maps.geometry.spherical.computeDistanceBetween(
-          new google.maps.LatLng(
-            defaultMapOptions.center.lat,
-            defaultMapOptions.center.lng
-          ),
-          new google.maps.LatLng(people[0].location.lat, people[0].location.lng)
-        );
-        console.log(
-          `distance between Empire State Building and ${people[0].name}`,
-          (distance / 1000).toFixed(2)
-        );
       })
       .catch((e) => {
         console.error(e);
@@ -100,14 +87,16 @@ function MapContainer({ people }: MapContainerProps) {
 
   return (
     <>
-      <div className="mb-2">
+      <div id="map" ref={ref}></div>
+      <div className="my-2">
         <Button
-          label="Recenter on the Empire State Building"
+          label="Recenter map"
           onClick={reCenter}
           outlined
           className="mr-1"
           icon="pi pi-compass"
           iconPos="right"
+          size="small"
         />
         <Button
           label="Reset map"
@@ -116,9 +105,9 @@ function MapContainer({ people }: MapContainerProps) {
           text
           icon="pi pi-map"
           iconPos="right"
+          size="small"
         />
       </div>
-      <div id="map" ref={ref}></div>
     </>
   );
 }
