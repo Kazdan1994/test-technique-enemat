@@ -1,57 +1,68 @@
+import { MouseEvent } from "react";
 import { DataView } from "primereact/dataview";
 import { Button } from "primereact/button";
 import { Navbar } from "./components/organisms/Navbar.tsx";
 import MapContainer from "./components/organisms/MapContainer.tsx";
-import { type Person } from "./types.ts";
-import { randomLocation } from "./utils.ts";
+import { Location, type Person } from "./types.ts";
+import data from "./data.ts";
+import { useMapStore } from "./store.ts";
+import { defaultMapOptions } from "./utils.ts";
+import { Avatar } from "primereact/avatar";
 
 function App() {
-  const people: Person[] = [
-    {
-      id: 1,
-      name: "Jane Doe",
-      location: randomLocation([-73.985428, 40.748817]),
-    },
-    {
-      id: 2,
-      name: "Zita Orn",
-      location: randomLocation([-73.985428, 40.748817]),
-    },
-    {
-      id: 3,
-      name: "Brandy Effertz",
-      location: randomLocation([-73.985428, 40.748817]),
-    },
-    {
-      id: 4,
-      name: "Justen Hegmann",
-      location: randomLocation([-73.985428, 40.748817]),
-    },
-    {
-      id: 5,
-      name: "Blaise Cummerata",
-      location: randomLocation([-73.985428, 40.748817]),
-    },
-  ];
+  const { map, googleInstance } = useMapStore((state) => state);
+
+  const people: Person[] = data;
+
+  const centerOnPerson =
+    (person: Person) => (e: MouseEvent<HTMLButtonElement>) => {
+      e.preventDefault();
+      map?.setCenter(person.location);
+      map?.setZoom(20);
+    };
+
+  function calcDistance(target: Location): string {
+    if (googleInstance) {
+      const distance =
+        googleInstance.maps.geometry.spherical.computeDistanceBetween(
+          new googleInstance.maps.LatLng(
+            defaultMapOptions.center.lat,
+            defaultMapOptions.center.lng
+          ),
+          new googleInstance.maps.LatLng(target.lat, target.lng)
+        );
+
+      return new Intl.NumberFormat("fr-FR", {
+        maximumFractionDigits: 2,
+      }).format(+(distance / 1000).toPrecision(2));
+    }
+
+    return "0";
+  }
 
   const itemTemplate = (person: Person) => (
-    <div className="sm:col-12 md:col-6 lg:col-4 p-2">
-      <div className="flex flex-column p-4 border-1 surface-border surface-card border-round h-full">
-        <div className="flex flex-column align-items-center gap-3 py-5">
-          <img
-            className="w-9 border-round"
-            src={`/img/avatars/avatar-${person.id}.png`}
-            alt=""
+    <div className="md:col-12 lg:col-6 p-2">
+      <div className="flex flex-column surface-border shadow-1 p-4 surface-card border-round">
+        <div className="flex flex-column align-items-center gap-4">
+          <Avatar
+            image={`/img/avatars/avatar-${person.id}.png`}
+            size="xlarge"
+            shape="circle"
           />
-          <div className="font-bold text-sm">{person.name}</div>
+          <div>
+            <span className="font-bold">{person.name}</span>
+            <span> - {calcDistance(person.location)} km</span>
+          </div>
         </div>
-        <footer className="mt-auto text-center">
+        <footer className="mt-auto text-center my-4">
           <Button
             icon="pi pi-map-marker"
-            rounded
+            label={`Locate ${person.name}`}
             raised
             severity="success"
             aria-label={`Show location of ${person.name}`}
+            onClick={centerOnPerson(person)}
+            size="small"
           />
         </footer>
       </div>

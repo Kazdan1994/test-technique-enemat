@@ -1,8 +1,10 @@
+export type Location = {
+  lat: number;
+  lng: number;
+};
+
 export type Person = {
   id: number;
   name: string;
-  location: {
-    lat: number;
-    lng: number;
-  };
+  location: Location;
 };

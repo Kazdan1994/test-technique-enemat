@@ -14,3 +14,11 @@ export function randomLocation(origin: [number, number]) {
 
   return { lat: latitude, lng: longitude };
 }
+
+export const defaultMapOptions = {
+  center: {
+    lat: 40.748817,
+    lng: -73.985428,
+  },
+  zoom: 14,
+};
