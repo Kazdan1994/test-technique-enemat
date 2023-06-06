@@ -1,22 +1,35 @@
-import { Map, GoogleApiWrapper } from "google-maps-react";
+import { useEffect, useRef } from "react";
+import { Loader } from "@googlemaps/js-api-loader";
 
-type MapContainerProps = {
-  google: string;
-};
+const loader = new Loader({
+  apiKey: import.meta.env.VITE_GOOGLE_API_KEY,
+  version: "weekly",
+  libraries: ["places"],
+  authReferrerPolicy: "origin",
+});
 
-export function MapContainer({ google }: MapContainerProps) {
-  return (
-    <Map
-      google={google}
-      style={{ height: "100%", width: "100%" }}
-      initialCenter={{
-        lat: 40.7484405,
-        lng: -73.9856644,
-      }}
-    />
-  );
+function MapContainer() {
+  const ref = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const defaultMapOptions = {
+      center: {
+        lat: 40.762312,
+        lng: -73.979345,
+      },
+      zoom: 11,
+    };
+    loader
+      .load()
+      .then((google) => {
+        new google.maps.Map(ref.current as HTMLDivElement, defaultMapOptions);
+      })
+      .catch((e) => {
+        console.error(e);
+      });
+  }, []);
+
+  return <div ref={ref} className="h-full"></div>;
 }
 
-export default GoogleApiWrapper({
-  apiKey: import.meta.env.YOUR_GOOGLE_API_KEY_GOES_HERE,
-})(MapContainer);
+export default MapContainer;

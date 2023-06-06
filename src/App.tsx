@@ -1,15 +1,8 @@
 import { Navbar } from "./components/organisms/Navbar.tsx";
 import { DataView } from "primereact/dataview";
 import { Button } from "primereact/button";
-
-type Person = {
-  id: number;
-  name: string;
-  location: {
-    lat: number;
-    long: number;
-  };
-};
+import MapContainer from "./components/organisms/MapContainer.tsx";
+import { type Person } from "./types.ts";
 
 function App() {
   const people: Person[] = [
@@ -18,7 +11,7 @@ function App() {
       name: "Jane Doe",
       location: {
         lat: 40.73960478942355,
-        long: -73.98353141775158,
+        lng: -73.98353141775158,
       },
     },
     {
@@ -26,7 +19,7 @@ function App() {
       name: "Zita Orn",
       location: {
         lat: 40.74962984687601,
-        long: -73.98145638837559,
+        lng: -73.98145638837559,
       },
     },
     {
@@ -34,7 +27,7 @@ function App() {
       name: "Brandy Effertz",
       location: {
         lat: 40.74173177355469,
-        long: -73.99294374020184,
+        lng: -73.99294374020184,
       },
     },
     {
@@ -42,7 +35,7 @@ function App() {
       name: "Justen Hegmann",
       location: {
         lat: 40.75422965097138,
-        long: -74.00268635126298,
+        lng: -74.00268635126298,
       },
     },
     {
@@ -50,7 +43,7 @@ function App() {
       name: "Blaise Cummerata",
       location: {
         lat: 40.74673262173286,
-        long: -73.9848281301488,
+        lng: -73.9848281301488,
       },
     },
   ];
@@ -87,11 +80,10 @@ function App() {
           <DataView value={people} itemTemplate={itemTemplate} layout="grid" />
         </div>
         <div className="col-8">
-          <div
-            className="m-4"
-            style={{ height: "100%", backgroundColor: "green" }}
-          >
-            &nbsp;
+          <div className="m-4 relative h-full">
+            <MapContainer
+            /*people={people}*/
+            />
           </div>
         </div>
       </div>
