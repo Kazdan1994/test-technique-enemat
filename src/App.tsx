@@ -1,50 +1,36 @@
-import { Navbar } from "./components/organisms/Navbar.tsx";
 import { DataView } from "primereact/dataview";
 import { Button } from "primereact/button";
+import { Navbar } from "./components/organisms/Navbar.tsx";
 import MapContainer from "./components/organisms/MapContainer.tsx";
 import { type Person } from "./types.ts";
+import { randomLocation } from "./utils.ts";
 
 function App() {
   const people: Person[] = [
     {
       id: 1,
       name: "Jane Doe",
-      location: {
-        lat: 40.73960478942355,
-        lng: -73.98353141775158,
-      },
+      location: randomLocation([-73.985428, 40.748817]),
     },
     {
       id: 2,
       name: "Zita Orn",
-      location: {
-        lat: 40.74962984687601,
-        lng: -73.98145638837559,
-      },
+      location: randomLocation([-73.985428, 40.748817]),
     },
     {
       id: 3,
       name: "Brandy Effertz",
-      location: {
-        lat: 40.74173177355469,
-        lng: -73.99294374020184,
-      },
+      location: randomLocation([-73.985428, 40.748817]),
     },
     {
       id: 4,
       name: "Justen Hegmann",
-      location: {
-        lat: 40.75422965097138,
-        lng: -74.00268635126298,
-      },
+      location: randomLocation([-73.985428, 40.748817]),
     },
     {
       id: 5,
       name: "Blaise Cummerata",
-      location: {
-        lat: 40.74673262173286,
-        lng: -73.9848281301488,
-      },
+      location: randomLocation([-73.985428, 40.748817]),
     },
   ];
 
@@ -54,7 +40,7 @@ function App() {
         <div className="flex flex-column align-items-center gap-3 py-5">
           <img
             className="w-9 border-round"
-            src={`src/assets/img/avatars/avatar-${person.id}.png`}
+            src={`/img/avatars/avatar-${person.id}.png`}
             alt=""
           />
           <div className="font-bold text-sm">{person.name}</div>
@@ -81,9 +67,7 @@ function App() {
         </div>
         <div className="col-8">
           <div className="m-4 relative h-full">
-            <MapContainer
-            /*people={people}*/
-            />
+            <MapContainer people={people} />
           </div>
         </div>
       </div>
