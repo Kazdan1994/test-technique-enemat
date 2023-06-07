@@ -1,8 +1,9 @@
-import { useEffect, useRef, MouseEvent } from "react";
+import { useEffect, useRef } from "react";
 import { Loader } from "@googlemaps/js-api-loader";
-import { Person } from "../../types.ts";
-import { useMapStore } from "../../store.ts";
 import { Button } from "primereact/button";
+import type { MouseEvent } from "react";
+import type { Person } from "../../types.ts";
+import { useMapStore } from "../../store.ts";
 import { defaultMapOptions } from "../../utils.ts";
 
 const loader = new Loader({

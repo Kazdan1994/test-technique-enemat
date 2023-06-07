@@ -1,9 +1,12 @@
-import { MouseEvent } from "react";
+import { lazy, Suspense } from "react";
+import type { MouseEvent } from "react";
 import { DataView } from "primereact/dataview";
 import { Button } from "primereact/button";
-import { Navbar } from "./components/organisms/Navbar.tsx";
-import MapContainer from "./components/organisms/MapContainer.tsx";
-import { Location, type Person } from "./types.ts";
+const Navbar = lazy(() => import("./components/organisms/Navbar.tsx"));
+const MapContainer = lazy(
+  () => import("./components/organisms/MapContainer.tsx")
+);
+import type { Location, Person } from "./types.ts";
 import data from "./data.ts";
 import { useMapStore } from "./store.ts";
 import { defaultMapOptions } from "./utils.ts";
@@ -66,7 +69,7 @@ function App() {
   );
 
   return (
-    <>
+    <Suspense fallback={<div>Loading...</div>}>
       <Navbar />
       <div className="m-4 lg:flex lg:justify-content-between">
         <div className="sm:col-12 lg:col-6 relative">
@@ -81,7 +84,7 @@ function App() {
           />
         </div>
       </div>
-    </>
+    </Suspense>
   );
 }
 

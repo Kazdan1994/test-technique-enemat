@@ -9,8 +9,8 @@ dependencies:
     specifier: ^8.0.2
     version: 8.0.2
   '@googlemaps/js-api-loader':
-    specifier: ^1.16.0
-    version: 1.16.0
+    specifier: ^1.16.1
+    version: 1.16.1
   primeflex:
     specifier: ^3.3.1
     version: 3.3.1
@@ -320,8 +320,8 @@ packages:
     engines: {node: ^14.17.0 || ^16.13.0 || >=18.0.0, npm: '>=6.14.13'}
     dev: false
 
-  /@googlemaps/js-api-loader@1.16.0:
-    resolution: {integrity: sha512-5KT0titYui0iu5uBsLZ09+qtyZYdckt5zu87FHYLeDYMGmhrfaQtyiBKwGjae/LzY7RlE+RcbHuxUVeaQ4lRKA==}
+  /@googlemaps/js-api-loader@1.16.1:
+    resolution: {integrity: sha512-x6M48e2nkIrp1KGNwXEVMRTCzruBw/w1HItlhVXL6Lp5pKuTcJEfOCE4tjPk3n6kLcMuJYXE8aluYMmakn7tTw==}
     dependencies:
       fast-deep-equal: 3.1.3
     dev: false
