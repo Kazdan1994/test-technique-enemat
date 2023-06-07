@@ -11,4 +11,12 @@ export default defineConfig({
       "@components": "/src/components",
     },
   },
+  server: {
+    watch: {
+      usePolling: true,
+    },
+    host: true,
+    strictPort: true,
+    port: 3000,
+  },
 });

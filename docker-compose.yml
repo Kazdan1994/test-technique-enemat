@@ -1,0 +1,12 @@
+version: "3"
+
+services:
+
+    test_technique_enemat:
+        container_name: test_technique_enemat
+        build: .
+        env_file: .env
+        environment:
+            NODE_ENV: "production"
+        ports:
+            - "80:80"

@@ -4,3 +4,9 @@
 - Represent the 5 friends randomly on a map in a 2 kilometers radius of the Empire State Building
 - Add a photo in each pointers
 - Study Google Maps doc
+
+## Run the project
+
+```docker-compose up --build```
+
+Then go on http://localhost
