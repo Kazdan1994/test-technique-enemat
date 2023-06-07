@@ -7,6 +7,14 @@
 
 ## Run the project
 
+Create a file .env based on the .env.example
+
+set the variable VITE_GOOGLE_API_KEY with your google maps api key
+
+You can find it at https://console.cloud.google.com/
+
+Don't hesitate to use the doc provided at https://developers.google.com/maps/documentation
+
 ```docker-compose up --build```
 
 Then go on http://localhost
