@@ -19,11 +19,11 @@ type MapContainerProps = {
 
 function MapContainer({ people }: MapContainerProps) {
   const ref = useRef<HTMLDivElement | null>(null);
-  const { map, setMap, setGoogleInstance, markers, addMarker } = useMapStore(
-    (state) => state
-  );
+  const { map, setMap, setGoogleInstance } = useMapStore((state) => state);
 
   useEffect(() => {
+    const markers: google.maps.Marker[] = [];
+
     loader
       .load()
       .then((google) => {
@@ -59,7 +59,7 @@ function MapContainer({ people }: MapContainerProps) {
             draggable: true,
           });
 
-          addMarker(marker);
+          markers.push(marker);
         }
 
         new google.maps.Circle({
@@ -78,26 +78,28 @@ function MapContainer({ people }: MapContainerProps) {
       .catch((e) => {
         console.error(e);
       });
-  }, [addMarker, people, setGoogleInstance, setMap]);
 
-  setInterval(() => {
-    console.log(markers);
+    const interval = setInterval(() => {
+      markers.forEach((marker) => {
+        const position = marker.getPosition() as google.maps.LatLng;
+        const heading = google.maps.geometry.spherical.computeHeading(
+          position,
+          defaultMapOptions.center
+        );
+        const newLatLng = google.maps.geometry.spherical.computeOffset(
+          position,
+          10,
+          heading
+        );
 
-    markers.forEach((marker) => {
-      const position = marker.getPosition();
+        marker.setPosition(newLatLng);
+      });
+    }, 1000);
 
-      const earth = 6378.137, //radius of the earth in kilometer
-        pi = Math.PI,
-        m = 1 / (((2 * pi) / 360) * earth) / 1000; //1 meter in degree
-
-      const newLatitude = (position?.lat() || 0) + 10 * m;
-      const newLongitude =
-        (position?.lng() || 0) +
-        (10 * m) / Math.cos((position?.lat() || 0) * (Math.PI / 180));
-
-      marker.setPosition(new google.maps.LatLng(newLatitude, newLongitude));
-    });
-  }, 1000);
+    return () => {
+      clearInterval(interval);
+    };
+  }, [people, setGoogleInstance, setMap]);
 
   const reCenter = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();

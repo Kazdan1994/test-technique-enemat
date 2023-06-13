@@ -5,7 +5,11 @@
 - Add a photo in each pointers
 - Study Google Maps doc
 
-## Run the project
+## Update
+
+- Move the markers of each people closer to the Empire State Building every second (we simulate moving)
+
+# Run the project
 
 Create a file .env based on the .env.example
 
