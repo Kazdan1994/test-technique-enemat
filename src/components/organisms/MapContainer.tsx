@@ -19,7 +19,9 @@ type MapContainerProps = {
 
 function MapContainer({ people }: MapContainerProps) {
   const ref = useRef<HTMLDivElement | null>(null);
-  const { map, setMap, setGoogleInstance } = useMapStore((state) => state);
+  const { map, setMap, setGoogleInstance, markers, addMarker } = useMapStore(
+    (state) => state
+  );
 
   useEffect(() => {
     loader
@@ -41,10 +43,11 @@ function MapContainer({ people }: MapContainerProps) {
           },
           map: newMap,
           optimized: false,
+          draggable: true,
         });
 
         for (const person of people) {
-          new google.maps.Marker({
+          const marker = new google.maps.Marker({
             position: person.location,
             title: person.name,
             icon: {
@@ -53,7 +56,10 @@ function MapContainer({ people }: MapContainerProps) {
             },
             map: newMap,
             optimized: false,
+            draggable: true,
           });
+
+          addMarker(marker);
         }
 
         new google.maps.Circle({
@@ -72,7 +78,26 @@ function MapContainer({ people }: MapContainerProps) {
       .catch((e) => {
         console.error(e);
       });
-  }, [people, setGoogleInstance, setMap]);
+  }, [addMarker, people, setGoogleInstance, setMap]);
+
+  setInterval(() => {
+    console.log(markers);
+
+    markers.forEach((marker) => {
+      const position = marker.getPosition();
+
+      const earth = 6378.137, //radius of the earth in kilometer
+        pi = Math.PI,
+        m = 1 / (((2 * pi) / 360) * earth) / 1000; //1 meter in degree
+
+      const newLatitude = (position?.lat() || 0) + 10 * m;
+      const newLongitude =
+        (position?.lng() || 0) +
+        (10 * m) / Math.cos((position?.lat() || 0) * (Math.PI / 180));
+
+      marker.setPosition(new google.maps.LatLng(newLatitude, newLongitude));
+    });
+  }, 1000);
 
   const reCenter = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
